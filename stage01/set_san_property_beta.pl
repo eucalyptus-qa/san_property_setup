@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 #use strict;
 use Cwd;
+use Digest::MD5  qw(md5_hex);
 
 require "ec2ops.pl";
 
@@ -131,9 +132,9 @@ while( $line = <LIST> ){
 			if( $temp =~ /eucalyptus\/(.+)/ ){
 				$ENV{'QA_BZR_DIR'} = $1; 
 			};
-	}elsif( $line =~ /^TESTNAME\s+(.+)/ ){
-			print "\nTESTNAME\t$1\n";
-			$ENV{'QA_TESTNAME'} = $1;
+	}elsif( $line =~ /^TEST_NAME\s+(.+)/ ){
+			print "\nTEST_NAME\t$1\n";
+			$ENV{'QA_TEST_NAME'} = $1;
 	}elsif( $line =~ /^UNIQUE_ID\s+(\d+)/ ){
 			print "\nUNIQUE_ID\t$1\n";
 			$ENV{'QA_UNIQUE_ID'} = $1;
@@ -267,7 +268,8 @@ if( is_use_dev_san_from_memo() == 1 ){
 };
 
 ### ADDED for VNX support
-my $test_id = substr($ENV{'QA_TESTNAME'},0,4) . "-" . $ENV{'QA_UNIQUE_ID'};
+my $md5_hex = md5_hex($ENV{'QA_TEST_NAME'});
+my $test_id = substr($md5_hex,0,4) . "-" . $ENV{'QA_UNIQUE_ID'};
 
 my $bzr = $ENV{'QA_BZR_DIR'};
 
@@ -351,8 +353,8 @@ if( $san_provider eq "NetappProvider" ){
 		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanpassword=rdc4msl\" ");
 		sleep(1);
 
-		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.chapuser=$user_id\n";
-		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.chapuser=$user_id\" ");
+		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.chapuser=$test_id\n";
+		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.chapuser=$test_id\" ");
 		sleep(1);
 
 		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.storagepool=0\n";
