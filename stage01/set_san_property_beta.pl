@@ -78,7 +78,7 @@ while( $line = <LIST> ){
 		push( @roll_lst, $6 );
 
 		my $this_roll = $6;
-
+               
 		if( does_It_Have($this_roll, "CLC") && $clc_ip eq "" ){
 			$clc_index = $index;
 			$clc_ip = $1;
@@ -101,7 +101,7 @@ while( $line = <LIST> ){
 			$sc_ip = $1;
 
 			if( $this_roll =~ /SC(\d+)/ ){
-                                $sc_lst{"SC_$1"} = $sc_ip;
+                            $sc_lst{"SC_$1"} = $sc_ip;
                         };
 		};
 
@@ -241,7 +241,8 @@ print "\n";
 print "Checking SAN option in MEMO\n";
 print "\n";
 
-my $ebs_storage_manager = "NO-SAN";
+#Default is now OverlayManager, but that must be explicitly configured
+my $ebs_storage_manager = "OverlayManager";
 
 my $san_provider = "NO-SAN";
 
@@ -275,6 +276,42 @@ my $bzr = $ENV{'QA_BZR_DIR'};
 
 #if( $bzr =~ /eee-2\.0/ ){
 
+#iif( $ebs_manager eq "SANManager" ) {
+#  foreach $sc (keys(%partitions)) {
+#    print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=SANManager\n";
+#    system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=SANManager\" ");
+#    sleep(1);
+#  };
+#}els
+if( $ebs_storage_manager eq "DASManager" ){
+
+  foreach $sc (keys(%partitions)) {
+    #We need to make sure that /dev/sdb is clean.
+    print "$sc_ip :: parted -s /dev/sdb rm 1\n";
+    system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$sc_ip \"parted -s /dev/sdb rm 1\" ");
+    
+    print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=das\n";
+    system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=das\" ");
+
+    sleep(1);
+    print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.dasdevice=/dev/sdb\n";
+    system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.dasdevice=/dev/sdb\" ");
+    sleep(1);
+  };
+  sleep(1);
+
+}elsif($ebs_storage_manager eq "OverlayManager") {
+  #Setup OverlayManager by default if not specified as other
+  foreach $sc (keys(%partitions)) {
+    print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=OverlayManager\n";
+    system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=overlay\" ");
+    sleep(1);
+  };
+};
+print "[TEST_REPORT]\tStorage Manager setup \'$ebs_storage_manager\' is completed\n";
+
+print "[TEST_REPORT]\tSAN Provider setup \'$san_provider\' is starting\n";
+
 if( $san_provider eq "NetappProvider" ){
 
 	my $netapp_ip = "192.168.5.191";
@@ -283,6 +320,13 @@ if( $san_provider eq "NetappProvider" ){
 	};
 
         foreach $sc (keys(%partitions)) {
+		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=netapp\n";
+		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=netapp\" ");
+		sleep(1);
+
+		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanhost=$netapp_ip\n";
+		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanhost=$netapp_ip\" ");
+		sleep(1);
 
 		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanhost=$netapp_ip\n";
 		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanhost=$netapp_ip\" ");
@@ -312,6 +356,11 @@ if( $san_provider eq "NetappProvider" ){
 
         foreach $sc (keys(%partitions)) {
 	
+	
+		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=equallogic\n";
+		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=equallogic\" ");
+		sleep(1);
+
 		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanhost=$elogic_ip\n";
 		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanhost=$elogic_ip\" ");
 		sleep(1);
@@ -340,7 +389,10 @@ if( $san_provider eq "NetappProvider" ){
 
 
         foreach $sc (keys(%partitions)) {
-	
+		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=emc-vnx\n";
+		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=emc-vnx\" ");
+		sleep(1);
+
 		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanhost=$san_ip\n";
 		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanhost=$san_ip\" ");
 		sleep(1);
@@ -361,24 +413,12 @@ if( $san_provider eq "NetappProvider" ){
 		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.storagepool=0\" ");
 		sleep(1);
 
-###	NO MORE		100212
-#		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sp=a\n";
-#		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sp=a\" ");
-#		sleep(1);
-
-#		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.port=6\n";
-#		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.port=6\" ");
-#		sleep(1);
-
-###	ADDED		100212
-		my $ncpaths = "iface0:192.168.25.182,iface1:10.109.25.186";
-		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.ncpaths=\"$ncpaths\"\n";
-		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.ncpaths=\"$ncpaths\"\" ");
+		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sp=a\n";
+		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sp=a\" ");
 		sleep(1);
 
-		my $scpaths = "iface0:192.168.25.182,iface1:10.109.25.186";
-		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.scpaths=\"$scpaths\"\n";
-		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.scpaths=\"$scpaths\"\" ");
+		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.port=6\n";
+		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.port=6\" ");
 		sleep(1);
 
 		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.loginscope=0\n";
@@ -393,26 +433,9 @@ if( $san_provider eq "NetappProvider" ){
 
 	print "\n";
 	print "[TEST_REPORT]\tSAN setup \'$san_provider\' is completed\n";
-
-
-}elsif( $ebs_storage_manager eq "DASManager" ){
-
-        foreach $sc (keys(%partitions)) {
-		#We need to make sure that /dev/sdb is clean.
-	        print "$sc_ip :: parted -s /dev/sdb rm 1\n";
-		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$sc_ip \"parted -s /dev/sdb rm 1\" ");
- 
-		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.dasdevice=/dev/sdb\n";
-		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.dasdevice=/dev/sdb\" ");
-		sleep(1);
-	};
-
-	print "\n";
-	print "[TEST_REPORT]\tSAN setup \'$ebs_storage_manager\' is completed\n";
-
 }else{
 	print "\n";
-	print "[TEST_REPORT]\tSAN setup is not specified\n";
+	print "[TEST_REPORT]\tSAN Provider setup is not specified\n";
 };
 
 
