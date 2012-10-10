@@ -276,13 +276,6 @@ my $bzr = $ENV{'QA_BZR_DIR'};
 
 #if( $bzr =~ /eee-2\.0/ ){
 
-#iif( $ebs_manager eq "SANManager" ) {
-#  foreach $sc (keys(%partitions)) {
-#    print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=SANManager\n";
-#    system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=SANManager\" ");
-#    sleep(1);
-#  };
-#}els
 if( $ebs_storage_manager eq "DASManager" ){
 
   foreach $sc (keys(%partitions)) {
@@ -327,11 +320,6 @@ if( $san_provider eq "NetappProvider" ){
 		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanhost=$netapp_ip\n";
 		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanhost=$netapp_ip\" ");
 		sleep(1);
-
-		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanhost=$netapp_ip\n";
-		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanhost=$netapp_ip\" ");
-		sleep(1);
-
 
 		print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanuser=root\n";
 		system("ssh -o ServerAliveInterval=1 -o ServerAliveCountMax=5 -o StrictHostKeyChecking=no root\@$clc_ip \"source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.sanuser=root\" ");
