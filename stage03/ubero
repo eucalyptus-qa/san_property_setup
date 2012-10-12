@@ -1,0 +1,128 @@
+*****
+CMD=runat 10 ping -c 1 192.168.51.149
+RUNATCMD: ping -c 1 192.168.51.149 
+PING 192.168.51.149 (192.168.51.149) 56(84) bytes of data.
+64 bytes from 192.168.51.149: icmp_seq=1 ttl=64 time=0.164 ms
+
+--- 192.168.51.149 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.164/0.164/0.164/0.000 ms
+*****
+CMD=runat 10 ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus;  uname -a 
+RUNATCMD: ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus;  uname -a  
+Warning: Permanently added '192.168.51.149' (RSA) to the list of known hosts.
+Linux eucahost-51-149.eucalyptus 2.6.32-279.1.1.el6.x86_64 #1 SMP Tue Jul 10 13:47:21 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+*****
+CMD=runat 10 ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus;  ls -l /opt/eucalyptus/usr/sbin/euca_conf 
+RUNATCMD: ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus;  ls -l /opt/eucalyptus/usr/sbin/euca_conf  
+Warning: Permanently added '192.168.51.149' (RSA) to the list of known hosts.
+-rwxr-xr-x 1 root root 43076 Oct 11 18:18 /opt/eucalyptus/usr/sbin/euca_conf
+*****
+CMD=runat 10 ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus; export PATH=/opt/eucalyptus/usr/sbin:$PATH; export EUCALYPTUS=/opt/eucalyptus;  readlink -f `which java` 
+RUNATCMD: ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus; export PATH=/opt/eucalyptus/usr/sbin:$PATH; export EUCALYPTUS=/opt/eucalyptus;  readlink -f `which java`  
+Warning: Permanently added '192.168.51.149' (RSA) to the list of known hosts.
+/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre/bin/java
+*****
+CMD=runat 10 ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus; export PATH=/opt/eucalyptus/usr/sbin:$PATH; export EUCALYPTUS=/opt/eucalyptus; export JAVA_HOME=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre; export PATH=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre/bin:$PATH;  if netstat -tan | grep 8443 >/dev/null ; then euca-describe-services --system-internal; else exit 1; fi 
+RUNATCMD: ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus; export PATH=/opt/eucalyptus/usr/sbin:$PATH; export EUCALYPTUS=/opt/eucalyptus; export JAVA_HOME=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre; export PATH=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre/bin:$PATH;  if netstat -tan | grep 8443 >/dev/null ; then euca-describe-services --system-internal; else exit 1; fi  
+Warning: Permanently added '192.168.51.149' (RSA) to the list of known hosts.
+SERVICE	reporting      	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Reporting	arn:euca:bootstrap::reporting:192.168.51.149/
+SERVICE	tokens         	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Tokens	arn:euca:eucalyptus::tokens:192.168.51.149/
+SERVICE	dns            	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Dns 	arn:euca:eucalyptus::dns:192.168.51.149/
+SERVICE	walrus         	walrus         	WS_149         	ENABLED   	335 	http://192.168.51.149:8773/services/Walrus	arn:euca:bootstrap:walrus:walrus:WS_149/
+SERVICE	storage        	PARTI00        	SC_158         	NOTREADY  	335 	http://192.168.51.158:8773/services/Storage	arn:euca:eucalyptus:PARTI00:storage:SC_158/
+SERVICE	properties     	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Properties	arn:euca:bootstrap::properties:192.168.51.149/
+SERVICE	component      	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Component	arn:euca:bootstrap::component:192.168.51.149/
+SERVICE	notifications  	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Notifications	arn:euca:eucalyptus::notifications:192.168.51.149/
+SERVICE	configuration  	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Configuration	arn:euca:eucalyptus::configuration:192.168.51.149/
+SERVICE	bootstrap      	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Empyrean	arn:euca:bootstrap:::192.168.51.149/
+SERVICE	eucalyptus     	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Eucalyptus	arn:euca:eucalyptus:::192.168.51.149/
+SERVICE	db             	eucalyptus     	192.168.51.149 	ENABLED   	335 	postgresql://192.168.51.149:8777/eucalyptus?ssl=true&sslfactory=com.eucalyptus.postgresql.PostgreSQLSSLSocketFactory	arn:euca:eucalyptus::db:192.168.51.149/
+SERVICE	euare          	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Euare	arn:euca:eucalyptus::euare:192.168.51.149/
+SERVICE	jetty          	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Jetty	arn:euca:eucalyptus::jetty:192.168.51.149/
+SERVICE	ldap           	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Ldap	arn:euca:eucalyptus::ldap:192.168.51.149/
+SERVICE	cluster        	PARTI00        	CC_158         	ENABLED   	335 	http://192.168.51.158:8774/axis2/services/EucalyptusCC	arn:euca:eucalyptus:PARTI00:cluster:CC_158/
+*****
+CMD=cat /tmp/ec2ops.out.28208
+RUNATCMD: ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus; export PATH=/opt/eucalyptus/usr/sbin:$PATH; export EUCALYPTUS=/opt/eucalyptus; export JAVA_HOME=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre; export PATH=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre/bin:$PATH;  if netstat -tan | grep 8443 >/dev/null ; then euca-describe-services --system-internal; else exit 1; fi  
+Warning: Permanently added '192.168.51.149' (RSA) to the list of known hosts.
+SERVICE	reporting      	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Reporting	arn:euca:bootstrap::reporting:192.168.51.149/
+SERVICE	tokens         	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Tokens	arn:euca:eucalyptus::tokens:192.168.51.149/
+SERVICE	dns            	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Dns 	arn:euca:eucalyptus::dns:192.168.51.149/
+SERVICE	walrus         	walrus         	WS_149         	ENABLED   	335 	http://192.168.51.149:8773/services/Walrus	arn:euca:bootstrap:walrus:walrus:WS_149/
+SERVICE	storage        	PARTI00        	SC_158         	NOTREADY  	335 	http://192.168.51.158:8773/services/Storage	arn:euca:eucalyptus:PARTI00:storage:SC_158/
+SERVICE	properties     	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Properties	arn:euca:bootstrap::properties:192.168.51.149/
+SERVICE	component      	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Component	arn:euca:bootstrap::component:192.168.51.149/
+SERVICE	notifications  	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Notifications	arn:euca:eucalyptus::notifications:192.168.51.149/
+SERVICE	configuration  	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Configuration	arn:euca:eucalyptus::configuration:192.168.51.149/
+SERVICE	bootstrap      	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Empyrean	arn:euca:bootstrap:::192.168.51.149/
+SERVICE	eucalyptus     	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Eucalyptus	arn:euca:eucalyptus:::192.168.51.149/
+SERVICE	db             	eucalyptus     	192.168.51.149 	ENABLED   	335 	postgresql://192.168.51.149:8777/eucalyptus?ssl=true&sslfactory=com.eucalyptus.postgresql.PostgreSQLSSLSocketFactory	arn:euca:eucalyptus::db:192.168.51.149/
+SERVICE	euare          	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Euare	arn:euca:eucalyptus::euare:192.168.51.149/
+SERVICE	jetty          	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Jetty	arn:euca:eucalyptus::jetty:192.168.51.149/
+SERVICE	ldap           	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Ldap	arn:euca:eucalyptus::ldap:192.168.51.149/
+SERVICE	cluster        	PARTI00        	CC_158         	ENABLED   	335 	http://192.168.51.158:8774/axis2/services/EucalyptusCC	arn:euca:eucalyptus:PARTI00:cluster:CC_158/
+*****
+CMD=runat 10 ping -c 1 192.168.51.149
+RUNATCMD: ping -c 1 192.168.51.149 
+PING 192.168.51.149 (192.168.51.149) 56(84) bytes of data.
+64 bytes from 192.168.51.149: icmp_seq=1 ttl=64 time=0.160 ms
+
+--- 192.168.51.149 ping statistics ---
+1 packets transmitted, 1 received, 0% packet loss, time 0ms
+rtt min/avg/max/mdev = 0.160/0.160/0.160/0.000 ms
+*****
+CMD=runat 10 ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus;  uname -a 
+RUNATCMD: ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus;  uname -a  
+Warning: Permanently added '192.168.51.149' (RSA) to the list of known hosts.
+Linux eucahost-51-149.eucalyptus 2.6.32-279.1.1.el6.x86_64 #1 SMP Tue Jul 10 13:47:21 UTC 2012 x86_64 x86_64 x86_64 GNU/Linux
+*****
+CMD=runat 10 ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus;  ls -l /opt/eucalyptus/usr/sbin/euca_conf 
+RUNATCMD: ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus;  ls -l /opt/eucalyptus/usr/sbin/euca_conf  
+Warning: Permanently added '192.168.51.149' (RSA) to the list of known hosts.
+-rwxr-xr-x 1 root root 43076 Oct 11 18:18 /opt/eucalyptus/usr/sbin/euca_conf
+*****
+CMD=runat 10 ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus; export PATH=/opt/eucalyptus/usr/sbin:$PATH; export EUCALYPTUS=/opt/eucalyptus;  readlink -f `which java` 
+RUNATCMD: ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus; export PATH=/opt/eucalyptus/usr/sbin:$PATH; export EUCALYPTUS=/opt/eucalyptus;  readlink -f `which java`  
+Warning: Permanently added '192.168.51.149' (RSA) to the list of known hosts.
+/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre/bin/java
+*****
+CMD=runat 10 ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus; export PATH=/opt/eucalyptus/usr/sbin:$PATH; export EUCALYPTUS=/opt/eucalyptus; export JAVA_HOME=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre; export PATH=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre/bin:$PATH;  if netstat -tan | grep 8443 >/dev/null ; then euca-describe-services --system-internal; else exit 1; fi 
+RUNATCMD: ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus; export PATH=/opt/eucalyptus/usr/sbin:$PATH; export EUCALYPTUS=/opt/eucalyptus; export JAVA_HOME=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre; export PATH=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre/bin:$PATH;  if netstat -tan | grep 8443 >/dev/null ; then euca-describe-services --system-internal; else exit 1; fi  
+Warning: Permanently added '192.168.51.149' (RSA) to the list of known hosts.
+SERVICE	reporting      	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Reporting	arn:euca:bootstrap::reporting:192.168.51.149/
+SERVICE	tokens         	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Tokens	arn:euca:eucalyptus::tokens:192.168.51.149/
+SERVICE	dns            	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Dns 	arn:euca:eucalyptus::dns:192.168.51.149/
+SERVICE	walrus         	walrus         	WS_149         	ENABLED   	335 	http://192.168.51.149:8773/services/Walrus	arn:euca:bootstrap:walrus:walrus:WS_149/
+SERVICE	storage        	PARTI00        	SC_158         	NOTREADY  	335 	http://192.168.51.158:8773/services/Storage	arn:euca:eucalyptus:PARTI00:storage:SC_158/
+SERVICE	properties     	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Properties	arn:euca:bootstrap::properties:192.168.51.149/
+SERVICE	component      	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Component	arn:euca:bootstrap::component:192.168.51.149/
+SERVICE	notifications  	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Notifications	arn:euca:eucalyptus::notifications:192.168.51.149/
+SERVICE	configuration  	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Configuration	arn:euca:eucalyptus::configuration:192.168.51.149/
+SERVICE	bootstrap      	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Empyrean	arn:euca:bootstrap:::192.168.51.149/
+SERVICE	eucalyptus     	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Eucalyptus	arn:euca:eucalyptus:::192.168.51.149/
+SERVICE	db             	eucalyptus     	192.168.51.149 	ENABLED   	335 	postgresql://192.168.51.149:8777/eucalyptus?ssl=true&sslfactory=com.eucalyptus.postgresql.PostgreSQLSSLSocketFactory	arn:euca:eucalyptus::db:192.168.51.149/
+SERVICE	euare          	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Euare	arn:euca:eucalyptus::euare:192.168.51.149/
+SERVICE	jetty          	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Jetty	arn:euca:eucalyptus::jetty:192.168.51.149/
+SERVICE	ldap           	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Ldap	arn:euca:eucalyptus::ldap:192.168.51.149/
+SERVICE	cluster        	PARTI00        	CC_158         	ENABLED   	335 	http://192.168.51.158:8774/axis2/services/EucalyptusCC	arn:euca:eucalyptus:PARTI00:cluster:CC_158/
+*****
+CMD=cat /tmp/ec2ops.out.28208
+RUNATCMD: ssh -o StrictHostKeyChecking=no root@192.168.51.149 source /root/eucarc; export EC2_URL=http://192.168.51.149:8773/services/Eucalyptus; export PATH=/opt/eucalyptus/usr/sbin:$PATH; export EUCALYPTUS=/opt/eucalyptus; export JAVA_HOME=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre; export PATH=/usr/lib/jvm/java-1.6.0-openjdk-1.6.0.0.x86_64/jre/bin:$PATH;  if netstat -tan | grep 8443 >/dev/null ; then euca-describe-services --system-internal; else exit 1; fi  
+Warning: Permanently added '192.168.51.149' (RSA) to the list of known hosts.
+SERVICE	reporting      	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Reporting	arn:euca:bootstrap::reporting:192.168.51.149/
+SERVICE	tokens         	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Tokens	arn:euca:eucalyptus::tokens:192.168.51.149/
+SERVICE	dns            	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Dns 	arn:euca:eucalyptus::dns:192.168.51.149/
+SERVICE	walrus         	walrus         	WS_149         	ENABLED   	335 	http://192.168.51.149:8773/services/Walrus	arn:euca:bootstrap:walrus:walrus:WS_149/
+SERVICE	storage        	PARTI00        	SC_158         	NOTREADY  	335 	http://192.168.51.158:8773/services/Storage	arn:euca:eucalyptus:PARTI00:storage:SC_158/
+SERVICE	properties     	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Properties	arn:euca:bootstrap::properties:192.168.51.149/
+SERVICE	component      	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Component	arn:euca:bootstrap::component:192.168.51.149/
+SERVICE	notifications  	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Notifications	arn:euca:eucalyptus::notifications:192.168.51.149/
+SERVICE	configuration  	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Configuration	arn:euca:eucalyptus::configuration:192.168.51.149/
+SERVICE	bootstrap      	bootstrap      	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Empyrean	arn:euca:bootstrap:::192.168.51.149/
+SERVICE	eucalyptus     	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Eucalyptus	arn:euca:eucalyptus:::192.168.51.149/
+SERVICE	db             	eucalyptus     	192.168.51.149 	ENABLED   	335 	postgresql://192.168.51.149:8777/eucalyptus?ssl=true&sslfactory=com.eucalyptus.postgresql.PostgreSQLSSLSocketFactory	arn:euca:eucalyptus::db:192.168.51.149/
+SERVICE	euare          	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Euare	arn:euca:eucalyptus::euare:192.168.51.149/
+SERVICE	jetty          	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Jetty	arn:euca:eucalyptus::jetty:192.168.51.149/
+SERVICE	ldap           	eucalyptus     	192.168.51.149 	ENABLED   	335 	http://192.168.51.149:8773/services/Ldap	arn:euca:eucalyptus::ldap:192.168.51.149/
+SERVICE	cluster        	PARTI00        	CC_158         	ENABLED   	335 	http://192.168.51.158:8774/axis2/services/EucalyptusCC	arn:euca:eucalyptus:PARTI00:cluster:CC_158/
