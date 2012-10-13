@@ -323,7 +323,7 @@ if($this_euca_version < "3.2") {
     sleep(1);
     print "[TEST_REPORT]\tDAS Manager setup \'$ebs_storage_manager\' is completed\n";
 
-  }elsif($san_proider eq "NO-SAN" and $ebs_storage_manager eq "OverlayManager") {
+  }elsif($san_provider eq "NO-SAN" and $ebs_storage_manager eq "OverlayManager") {
     #Setup OverlayManager by default if not specified as other
     foreach $sc (keys(%partitions)) {
       print "$clc_ip :: source /root/eucarc; $ENV{'EUCALYPTUS'}/usr/sbin/euca-modify-property -p $partitions{$sc}.storage.blockstoragemanager=OverlayManager\n";
