@@ -254,6 +254,10 @@ if( is_ebs_storage_manager_from_memo() == 1){
 	$ebs_storage_manager = $ENV{'QA_MEMO_EBS_STORAGE_MANAGER'};
 };
 
+if( $ebs_storage_manager eq "NO-SAN" or $ebs_storage_manager eq "") {
+  $ebs_storage_manager = "OverlayManager";
+};
+
 print "\n";
 print "ACTIONS:\n";
 print "SAN_PROVIDER\t$san_provider\n";

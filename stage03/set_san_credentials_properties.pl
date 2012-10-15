@@ -382,7 +382,7 @@ if( $san_provider eq "NetappProvider" ){
 	print "[TEST_REPORT]\tSAN setup \'$san_provider\' is completed\n";
 }else{
 	print "\n";
-	print "[TEST_REPORT]\tSAN Provider setup is not specified\n";
+	print "[TEST_REPORT]\tSAN Provider setup is not specified: $san_provider\n";
 };
 
 
