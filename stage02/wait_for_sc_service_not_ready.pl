@@ -187,7 +187,7 @@ if(not $this_euca_version eq "" and $this_euca_version < "3.2") {
   exit(0);  
 }
 
-print "[TEST REPORT]\tWaiting for storage services to enter either NOT_READY or ENABLED state.\n";
+print "[TEST REPORT]\tWaiting for storage services to enter either NOT_READY, DISABLED, or ENABLED state.\n";
 for($i=0; $i <=24 ; $i++) {
   describe_services();
   find_real_master($component);
@@ -198,7 +198,7 @@ for($i=0; $i <=24 ; $i++) {
         print FH "$current_artifacts{master_ds_buf}\n";
         close(FH);
         $cmd = "cat /tmp/ec2ops.out.$$";
-        ($crc, $rc, $buf) = piperun($cmd, "egrep -e 'SERVICE[[:space:]]+$service' | awk '{print \$5, \$7, \$8}' | grep \'ENABLED\\|NOTREADY\' | grep storage | head -n 1", "ubero");
+        ($crc, $rc, $buf) = piperun($cmd, "egrep -e 'SERVICE[[:space:]]+$service' | awk '{print \$5, \$7, \$8}' | grep \'ABLED\\|NOTREADY\' | grep storage | head -n 1", "ubero");
         print "BUF: $buf\n";
         print "CRC: $crc\n";
         print "RC: $rc\n";
@@ -207,9 +207,9 @@ for($i=0; $i <=24 ; $i++) {
             print "\t$component $component: cannot determine status\n";
             exit(1);
         } elsif ($rc || !$buf || $buf eq "") {
-            print "\t$component $component is not in NOT_READY or ENABLED\n";
+            print "\t$component $component is not in NOTREADY, DISABLED, or ENABLED\n";
         } else {
-            print "\t$component $component is ENABLED or NOT_READY as expected\n";
+            print "\t$component $component is ENABLED, DISABLED, or NOTREADY as expected\n";
             print "SC Master: $masters{$component}\n"; 
             exit(0);
         }
