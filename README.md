@@ -1,3 +1,20 @@
+
+san_property_setup
+==================
+
+## Description
+
+Setup SAN property if SAN_PROVIDER is specified in MEMO
+
+## Procedure
+
+1. Parse list of all DUTs then download credentials from the CLC using euca_conf
+2. Check if a SAN provider was in the MEMO
+3. Set the proper user/password and IP of the SAN depending on whether it is Netapp or Eqaullogic.
+
+
+<hr><hr><hr>
+
 # Eucalyptus Testunit Framework
 
 Eucalyptus Testunit Framework is designed to run a list of test scripts written by Eucalyptus developers.
